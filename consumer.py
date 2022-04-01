@@ -6,6 +6,7 @@ Assignment 1
 March 2021
 """
 
+from socket import create_server
 from threading import Thread
 
 
@@ -31,7 +32,11 @@ class Consumer(Thread):
         :type kwargs:
         :param kwargs: other arguments that are passed to the Thread's __init__()
         """
-        pass
+        Thread.__init__(self, **kwargs)
+        self.carts = carts
+        self.marketplace = marketplace
+        self.retry_wait_time = retry_wait_time
+        self.id = self.marketplace.new_cart()
 
     def run(self):
-        pass
+        print(self.id)

@@ -6,6 +6,7 @@ Assignment 1
 March 2021
 """
 
+from itertools import product
 from threading import Thread
 
 
@@ -31,7 +32,14 @@ class Producer(Thread):
         @type kwargs:
         @param kwargs: other arguments that are passed to the Thread's __init__()
         """
-        pass
-
+        Thread.__init__(self, **kwargs)
+        self.products = products
+        self.marketplace = marketplace
+        self.republish_wait_time = republish_wait_time
+        self.id = self.marketplace.register_producer()
+        
     def run(self):
         pass
+        # print("%d" % self.id)
+        # for elem in self.products:
+        #     print(elem[0].name)
