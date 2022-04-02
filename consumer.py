@@ -6,8 +6,9 @@ Assignment 1
 March 2021
 """
 
-from socket import create_server
+
 from threading import Thread
+import time
 
 
 class Consumer(Thread):
@@ -36,7 +37,27 @@ class Consumer(Thread):
         self.carts = carts
         self.marketplace = marketplace
         self.retry_wait_time = retry_wait_time
-        self.id = self.marketplace.new_cart()
+        self.name = kwargs['name']
 
     def run(self):
-        print(self.id)
+        for cart in self.carts:
+            cart_id = self.marketplace.new_cart()
+            for op in cart:
+                if op['type'] == 'add':
+                    i = 0
+                    while i < op['quantity']:
+                        tmp = self.marketplace.add_to_cart(
+                            cart_id, op['product'])
+                        if not tmp:
+                            time.sleep(self.retry_wait_time)
+                        else:
+                            i += 1
+                elif op['type'] == 'remove':
+                    i = 0
+                    while i < op['quantity']:
+                        self.marketplace.remove_from_cart(
+                            cart_id, op['product'])
+                        i += 1
+            order = self.marketplace.place_order(cart_id)
+            for product in order:
+                print(self.name + " bought " + str(product))

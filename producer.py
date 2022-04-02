@@ -6,8 +6,9 @@ Assignment 1
 March 2021
 """
 
-from itertools import product
+
 from threading import Thread
+import time
 
 
 class Producer(Thread):
@@ -37,9 +38,12 @@ class Producer(Thread):
         self.marketplace = marketplace
         self.republish_wait_time = republish_wait_time
         self.id = self.marketplace.register_producer()
-        
+
     def run(self):
-        pass
-        # print("%d" % self.id)
-        # for elem in self.products:
-        #     print(elem[0].name)
+        while True:
+            for product in self.products:
+                for _ in range(product[1]):
+                    if self.marketplace.publish(self.id, product[0]):
+                        time.sleep(product[2])
+                    else:
+                        time.sleep(self.republish_wait_time)
