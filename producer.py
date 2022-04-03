@@ -6,7 +6,6 @@ Assignment 1
 March 2021
 """
 
-
 from threading import Thread
 import time
 
@@ -37,13 +36,15 @@ class Producer(Thread):
         self.products = products
         self.marketplace = marketplace
         self.republish_wait_time = republish_wait_time
-        self.id = self.marketplace.register_producer()
+        self.prod_id = self.marketplace.register_producer()
 
     def run(self):
         while True:
             for product in self.products:
                 for _ in range(product[1]):
-                    if self.marketplace.publish(self.id, product[0]):
+                    # try to publish product and wait if succesfully published
+                    if self.marketplace.publish(self.prod_id, product[0]):
                         time.sleep(product[2])
                     else:
+                        # product queue is full, wait some more
                         time.sleep(self.republish_wait_time)
