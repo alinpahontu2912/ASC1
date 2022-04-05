@@ -41,7 +41,7 @@ class Consumer(Thread):
         self.name = kwargs.get('name')
 
     def add_to_market(self, quantity, cart_id, product):
-        '''
+        """
         :type quantity: int
         :param quantity: number of products
 
@@ -53,7 +53,7 @@ class Consumer(Thread):
 
         adds the product to the cart with cart_id 'quantity' times
 
-        '''
+        """
         i = 0
         while i < quantity:
             if not self.marketplace.add_to_cart(cart_id, product):
@@ -62,7 +62,7 @@ class Consumer(Thread):
                 i += 1
 
     def remove_from_market(self, quantity, cart_id, product):
-        '''
+        """
         :type quantity: int
         :param quantity: number of products
 
@@ -74,7 +74,7 @@ class Consumer(Thread):
 
         removes the product from the cart with cart_id 'quantity' times
 
-        '''
+        """
         i = 0
         while i < quantity:
             self.marketplace.remove_from_cart(cart_id, product)
